@@ -25,7 +25,7 @@ export class Boid extends Flock {
     this.steeringFactor = 0.01;
   }
 
-  update() {
+  update(deltaTime) {
     // adding the velocity in either direction to the position
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -104,5 +104,24 @@ export class Boid extends Flock {
     this.velocity.y += directionY * this.steeringFactor;
   }
 
-  separate() {}
+  separate() {
+    const nearbyBoids = this.detectBoids();
+    if (nearbyBoids.length === 0) {
+      return false;
+    }
+
+    for (let boid of nearbyBoids) {
+      const otherPosition = { x: boid.position.x, y: boid.position.y };
+      const separationForceX = this.position.x - otherPosition.x;
+      const separationForceY = this.position.y - otherPosition.y;
+      const distance = this.getDistance(boid);
+      const totalSeparationForce = {
+        x: separationForceX / (distance * distance),
+        y: separationForceY / (distance * distance),
+      };
+
+      this.velocity.x += totalSeparationForce.x;
+      this.velocity.y += totalSeparationForce.y;
+    }
+  }
 }
