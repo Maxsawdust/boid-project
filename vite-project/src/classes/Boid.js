@@ -25,7 +25,7 @@ export class Boid extends Flock {
     this.steeringFactor = 0.01;
   }
 
-  update(deltaTime) {
+  update() {
     // adding the velocity in either direction to the position
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -112,16 +112,13 @@ export class Boid extends Flock {
 
     for (let boid of nearbyBoids) {
       const otherPosition = { x: boid.position.x, y: boid.position.y };
-      const separationForceX = this.position.x - otherPosition.x;
-      const separationForceY = this.position.y - otherPosition.y;
       const distance = this.getDistance(boid);
-      const totalSeparationForce = {
-        x: separationForceX / (distance * distance),
-        y: separationForceY / (distance * distance),
+      const opposingForce = {
+        x: (this.position.x - otherPosition.x) / (distance * distance),
+        y: (this.position.y - otherPosition.y) / (distance * distance),
       };
-
-      this.velocity.x += totalSeparationForce.x;
-      this.velocity.y += totalSeparationForce.y;
+      this.velocity.x += opposingForce.x;
+      this.velocity.y += opposingForce.y;
     }
   }
 }

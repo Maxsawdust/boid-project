@@ -58,7 +58,11 @@ for (let i = 0; i < flock.size; i++) {
 // defining a lastTime to calculate deltaTime
 let lastTime = 0;
 
-function animate() {
+function animate(timestamp) {
+  // Calculate deltaTime using timestamp passed in from requestAnimationFrame
+  const deltaTime = timestamp - lastTime;
+  lastTime = timestamp;
+
   // Clear canvas
   context.clearRect(0, 0, canvas.width, canvas.height);
 
