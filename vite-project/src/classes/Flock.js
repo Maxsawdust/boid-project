@@ -1,5 +1,5 @@
 export class Flock {
-  size = 100;
+  size = 1000;
   visionRadius = 50;
   separationAmount = 1;
   alignmentAmount = 1;
